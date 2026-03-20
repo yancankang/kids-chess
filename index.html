@@ -221,6 +221,51 @@
       50% { transform: translateY(-5px); }
     }
     
+    @keyframes capture-flash {
+      0% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.8); opacity: 0.5; }
+      100% { transform: scale(0); opacity: 0; }
+    }
+    
+    @keyframes capture-burst {
+      0% { transform: scale(0); opacity: 1; }
+      100% { transform: scale(2.5); opacity: 0; }
+    }
+    
+    .capture-effect {
+      position: absolute;
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      pointer-events: none;
+      animation: capture-burst 0.4s ease-out forwards;
+    }
+    
+    .capture-effect.cat { background: radial-gradient(circle, #ffd54f 0%, transparent 70%); }
+    .capture-effect.dog { background: radial-gradient(circle, #b39ddb 0%, transparent 70%); }
+    .capture-effect.player1 { background: radial-gradient(circle, #ff6b6b 0%, transparent 70%); }
+    .capture-effect.player2 { background: radial-gradient(circle, #4ecdc4 0%, transparent 70%); }
+    
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      20%, 60% { transform: translateX(-3px); }
+      40%, 80% { transform: translateX(3px); }
+    }
+    
+    .cell.shake {
+      animation: shake 0.3s ease-in-out;
+    }
+    
+    @keyframes score-pop {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.4); }
+      100% { transform: scale(1); }
+    }
+    
+    .score.pop {
+      animation: score-pop 0.4s ease-out;
+    }
+    
     .how-to {
       margin-top: 15px;
       padding: 12px;
@@ -418,9 +463,23 @@
       // 吃子
       if (moveResult.captures) {
         const { row: capRow, col: capCol } = moveResult.captures;
+        const capturedPiece = board[capRow][capCol];
         board[capRow][capCol] = 0;
         captures[piece]++;
         captured = true;
+        
+        // 播放吃子特效
+        const capCell = document.querySelector(`[data-row="${capRow}"][data-col="${capCol}"]`);
+        if (capCell) {
+          const effect = document.createElement('div');
+          effect.className = `capture-effect ${piece === 1 ? 'player1' : 'player2'}`;
+          capCell.appendChild(effect);
+          capCell.classList.add('shake');
+          setTimeout(() => {
+            effect.remove();
+            capCell.classList.remove('shake');
+          }, 400);
+        }
       }
       
       // 检查是否到达对岸（猫到顶，狗到底）
@@ -428,6 +487,14 @@
       if ((piece === 1 && toRow === 0) || (piece === 2 && toRow === 4)) {
         scores[piece]++;
         scored = true;
+        
+        // 得分特效
+        const scoreEl = document.getElementById(`player${piece}-score`);
+        if (scoreEl) {
+          scoreEl.classList.remove('pop');
+          void scoreEl.offsetWidth; // 触发重排以重放动画
+          scoreEl.classList.add('pop');
+        }
         // 重置到起点
         const startRow = piece === 1 ? 4 : 0;
         const emptySpots = [];

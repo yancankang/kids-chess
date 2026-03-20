@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>🐱🐶 猫狗跳棋 🐶🐱</title>
+  <title>👶vs👨 亲子跳棋 👨vs👶</title>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     
@@ -87,15 +87,17 @@
     }
     
     .animal {
-      width: 45px;
-      height: 45px;
+      width: 50px;
+      height: 50px;
       border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
       font-size: 1.8em;
       transition: all 0.2s;
-      border: 2px solid transparent;
+      border: 3px solid transparent;
+      background-size: cover;
+      background-position: center;
     }
     
     .animal:hover {
@@ -103,15 +105,13 @@
     }
     
     .animal.cat {
-      background: linear-gradient(135deg, #ffd54f 0%, #ffb300 100%);
       border-color: #f57c00;
-      box-shadow: 0 3px 8px rgba(245, 124, 0, 0.4);
+      box-shadow: 0 3px 10px rgba(245, 124, 0, 0.5);
     }
     
     .animal.dog {
-      background: linear-gradient(135deg, #b39ddb 0%, #7e57c2 100%);
       border-color: #5e35b1;
-      box-shadow: 0 3px 8px rgba(94, 53, 177, 0.4);
+      box-shadow: 0 3px 10px rgba(94, 53, 177, 0.5);
     }
     
     .animal.selected {
@@ -296,7 +296,7 @@
   </style>
 </head>
 <body>
-  <h1>🐱🐶 猫狗跳棋 🐶🐱</h1>
+  <h1>👶vs👨 亲子跳棋 👨vs👶</h1>
   <p class="subtitle">适合4-99岁！</p>
   
   <div class="game-container">
@@ -304,12 +304,12 @@
     
     <div class="info">
       <div class="player-info cat-turn active" id="player1-info">
-        <h3>🐱 小猫咪</h3>
+        <h3>👶 宝宝</h3>
         <div class="score" id="player1-score">0</div>
         <div class="captures" id="player1-captures">吃掉: 0</div>
       </div>
       <div class="player-info dog-turn" id="player2-info">
-        <h3>🐶 小狗狗</h3>
+        <h3>👨 爸爸</h3>
         <div class="score" id="player2-score">0</div>
         <div class="captures" id="player2-captures">吃掉: 0</div>
       </div>
@@ -320,7 +320,7 @@
       <button class="hint" onclick="showHint()">💡 提示</button>
     </div>
     
-    <div class="message" id="message">🐱 小猫咪先走！点击猫咪开始~</div>
+    <div class="message" id="message">👶 宝宝先走！点击开始~</div>
   </div>
   
   <div class="how-to">
@@ -328,8 +328,8 @@
     <div class="rules">
       <div class="rule-item">👆 点自己动物</div>
       <div class="rule-item">👆 点目标位置</div>
-      <div class="rule-item">⬆️ 猫往上走</div>
-      <div class="rule-item">⬇️ 狗往下走</div>
+      <div class="rule-item">⬆️ 宝宝往上</div>
+      <div class="rule-item">⬇️ 爸爸往下</div>
       <div class="rule-item">⬆️⬇️ 可跳过吃子</div>
       <div class="rule-item">🏆 到对岸赢</div>
     </div>
@@ -367,9 +367,9 @@
           cell.dataset.col = col;
           
           if (board[row][col] === 1) {
-            cell.innerHTML = '<span class="animal cat">🐱</span>';
+            cell.innerHTML = '<span class="animal cat" style="background-image: url(\'avatar-baby3.png\')"></span>';
           } else if (board[row][col] === 2) {
-            cell.innerHTML = '<span class="animal dog">🐶</span>';
+            cell.innerHTML = '<span class="animal dog" style="background-image: url(\'avatar-parent3.png\')"></span>';
           }
           
           cell.addEventListener('click', () => handleClick(row, col));
@@ -512,7 +512,7 @@
         gameOver = true;
         clearHighlights();
         renderBoard();
-        const winner = piece === 1 ? '🐱 小猫咪' : '🐶 小狗狗';
+        const winner = piece === 1 ? '👶 宝宝' : '👨 爸爸';
         showMessage(`🏆 ${winner}获胜！太厉害了！`, 'winner');
         return;
       }
@@ -541,7 +541,7 @@
       updateInfo();
       renderBoard();
       
-      const playerName = currentPlayer === 1 ? '🐱 小猫咪' : '🐶 小狗狗';
+      const playerName = currentPlayer === 1 ? '👶 宝宝' : '👨 爸爸';
       showMessage(`${playerName}的回合~`);
     }
     
@@ -603,7 +603,7 @@
       selectedCell = null;
       initBoard();
       renderBoard();
-      showMessage('🐱 小猫咪先走！点击猫咪开始~');
+      showMessage('👶 宝宝先走！点击开始~');
     }
     
     // 启动游戏

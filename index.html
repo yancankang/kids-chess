@@ -421,10 +421,10 @@
       const piece = board[row][col];
       if (!piece) return moves;
       
-      // 猫往上(-1)，狗往下(+1)
+      // 宝宝往上(-1)，爸爸往下(+1)
       const forward = piece === 1 ? -1 : 1;
       
-      // 直线移动（一步）
+      // 只能走一步，可走到空位或吃掉相邻的敌人
       [{ dr: forward, dc: 0 }, { dr: forward, dc: -1 }, { dr: forward, dc: 1 }].forEach(({ dr, dc }) => {
         const nr = row + dr;
         const nc = col + dc;
@@ -432,12 +432,8 @@
           if (board[nr][nc] === 0) {
             moves.push({ row: nr, col: nc, captures: null });
           } else if (board[nr][nc] !== piece) {
-            // 检查能否跳吃
-            const jr = nr + dr;
-            const jc = nc + dc;
-            if (jr >= 0 && jr < 5 && jc >= 0 && jc < 5 && board[jr][jc] === 0) {
-              moves.push({ row: jr, col: jc, captures: { row: nr, col: nc } });
-            }
+            // 吃掉相邻的敌人
+            moves.push({ row: nr, col: nc, captures: { row: nr, col: nc } });
           }
         }
       });
@@ -457,19 +453,15 @@
     function executeMove(fromRow, fromCol, toRow, toCol, moveResult) {
       const piece = board[fromRow][fromCol];
       board[fromRow][fromCol] = 0;
-      board[toRow][toCol] = piece;
       
       let captured = false;
-      // 吃子
+      // 吃子：走到敌人位置把它吃掉
       if (moveResult.captures) {
-        const { row: capRow, col: capCol } = moveResult.captures;
-        const capturedPiece = board[capRow][capCol];
-        board[capRow][capCol] = 0;
         captures[piece]++;
         captured = true;
         
         // 播放吃子特效
-        const capCell = document.querySelector(`[data-row="${capRow}"][data-col="${capCol}"]`);
+        const capCell = document.querySelector(`[data-row="${toRow}"][data-col="${toCol}"]`);
         if (capCell) {
           const effect = document.createElement('div');
           effect.className = `capture-effect ${piece === 1 ? 'player1' : 'player2'}`;
@@ -481,6 +473,8 @@
           }, 400);
         }
       }
+      
+      board[toRow][toCol] = piece;
       
       // 检查是否到达对岸（猫到顶，狗到底）
       let scored = false;
@@ -514,25 +508,6 @@
         renderBoard();
         const winner = piece === 1 ? '👶 宝宝' : '👨 爸爸';
         showMessage(`🏆 ${winner}获胜！太厉害了！`, 'winner');
-        return;
-      }
-      
-      // 吃子后可以继续走
-      if (captured && !scored) {
-        currentPlayer = piece; // 继续当前玩家
-        selectedCell = { row: toRow, col: toCol };
-        clearHighlights();
-        renderBoard();
-        const hasMoreCaptures = getValidMoves(toRow, toCol).some(m => m.captures);
-        if (hasMoreCaptures) {
-          showMessage(`${piece === 1 ? '🐱' : '🐶'}可以继续吃！再走一步~`);
-          document.querySelector(`[data-row="${toRow}"][data-col="${toCol}"]`).classList.add('selected');
-          showValidMoves(toRow, toCol);
-        } else {
-          currentPlayer = currentPlayer === 1 ? 2 : 1;
-          updateInfo();
-          showMessage(`${currentPlayer === 1 ? '🐱' : '🐶'}的回合~`);
-        }
         return;
       }
       

@@ -3,261 +3,270 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>�企鹅跳跳棋 - 适合小朋友</title>
+  <title>🐱🐶 猫狗跳棋 🐶🐱</title>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     
     body {
       font-family: 'Comic Sans MS', cursive, sans-serif;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      background: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 50%, #ffd1ff 100%);
       min-height: 100vh;
       display: flex;
       flex-direction: column;
       align-items: center;
-      padding: 20px;
+      padding: 15px;
     }
     
     h1 {
-      color: white;
-      text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
-      font-size: 2.5em;
-      margin-bottom: 10px;
+      color: #d63384;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.15);
+      font-size: 2em;
+      margin-bottom: 5px;
     }
     
     .subtitle {
-      color: #ffeb3b;
-      font-size: 1.2em;
-      margin-bottom: 20px;
+      color: #7c3aed;
+      font-size: 1em;
+      margin-bottom: 15px;
     }
     
     .game-container {
       background: white;
       border-radius: 20px;
-      padding: 20px;
-      box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+      padding: 15px;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.15);
     }
     
     .board {
       display: grid;
-      grid-template-columns: repeat(5, 70px);
-      grid-template-rows: repeat(5, 70px);
+      grid-template-columns: repeat(5, 60px);
+      grid-template-rows: repeat(5, 60px);
       gap: 2px;
       background: #333;
-      padding: 5px;
+      padding: 4px;
       border-radius: 10px;
     }
     
     .cell {
-      width: 70px;
-      height: 70px;
+      width: 60px;
+      height: 60px;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 2.5em;
+      font-size: 2em;
       cursor: pointer;
       border-radius: 8px;
       transition: all 0.2s;
       user-select: none;
+      position: relative;
     }
     
     .cell:hover {
-      transform: scale(1.1);
-      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+      transform: scale(1.05);
     }
     
-    .cell.light { background: #fff3e0; }
-    .cell.dark { background: #8d6e63; }
+    .cell.light { background: #fff8e1; }
+    .cell.dark { background: #a1887f; }
     .cell.selected { 
       background: #4caf50 !important; 
-      box-shadow: 0 0 20px #4caf50;
+      box-shadow: 0 0 15px #4caf50;
     }
-    .cell.valid { 
+    .cell.valid-move { 
       background: #81c784 !important;
-      box-shadow: 0 0 15px #81c784;
+      box-shadow: 0 0 10px #81c784;
     }
-    .cell.last-move {
-      background: #fff176 !important;
-    }
-    
-    .piece {
-      text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
-      transition: transform 0.2s;
-      font-size: 2em;
+    .cell.can-capture { 
+      background: #ff9800 !important;
+      box-shadow: 0 0 15px #ff9800;
+      animation: pulse-orange 0.8s infinite;
     }
     
-    .piece:hover {
-      transform: scale(1.15);
+    @keyframes pulse-orange {
+      0%, 100% { box-shadow: 0 0 10px #ff9800; }
+      50% { box-shadow: 0 0 20px #ff9800; }
     }
     
-    .piece.player1 {
-      color: #1565c0;
-      background: linear-gradient(135deg, #bbdefb 0%, #64b5f6 100%);
+    .animal {
+      width: 45px;
+      height: 45px;
       border-radius: 50%;
-      width: 55px;
-      height: 55px;
       display: flex;
       align-items: center;
       justify-content: center;
-      box-shadow: 0 4px 12px rgba(21, 101, 192, 0.6);
-      border: 3px solid #1565c0;
+      font-size: 1.8em;
+      transition: all 0.2s;
+      border: 2px solid transparent;
     }
-    .piece.player2 {
-      color: #c62828;
-      background: linear-gradient(135deg, #ffcdd2 0%, #ef5350 100%);
-      border-radius: 50%;
-      width: 55px;
-      height: 55px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      box-shadow: 0 4px 12px rgba(198, 40, 40, 0.6);
-      border: 3px solid #c62828;
+    
+    .animal:hover {
+      transform: scale(1.1);
+    }
+    
+    .animal.cat {
+      background: linear-gradient(135deg, #ffd54f 0%, #ffb300 100%);
+      border-color: #f57c00;
+      box-shadow: 0 3px 8px rgba(245, 124, 0, 0.4);
+    }
+    
+    .animal.dog {
+      background: linear-gradient(135deg, #b39ddb 0%, #7e57c2 100%);
+      border-color: #5e35b1;
+      box-shadow: 0 3px 8px rgba(94, 53, 177, 0.4);
+    }
+    
+    .animal.selected {
+      border-color: #2e7d32;
+      box-shadow: 0 0 15px #2e7d32;
     }
     
     .info {
       display: flex;
       justify-content: space-around;
-      margin-top: 20px;
-      padding: 15px;
+      margin-top: 15px;
+      padding: 10px;
       background: #f5f5f5;
       border-radius: 10px;
     }
     
     .player-info {
       text-align: center;
-      padding: 10px 20px;
+      padding: 8px 15px;
       border-radius: 10px;
-      min-width: 120px;
-    }
-    
-    .player-info.active {
-      background: #4caf50;
-      color: white;
-      transform: scale(1.1);
+      min-width: 100px;
       transition: all 0.3s;
     }
     
+    .player-info.active {
+      transform: scale(1.08);
+    }
+    
+    .player-info.active.cat-turn {
+      background: linear-gradient(135deg, #ffd54f, #ffb300);
+      color: white;
+    }
+    
+    .player-info.active.dog-turn {
+      background: linear-gradient(135deg, #b39ddb, #7e57c2);
+      color: white;
+    }
+    
     .player-info h3 {
-      font-size: 1.3em;
-      margin-bottom: 5px;
+      font-size: 1.1em;
+      margin-bottom: 3px;
     }
     
     .score {
-      font-size: 1.5em;
+      font-size: 1.3em;
       font-weight: bold;
     }
     
+    .captures {
+      font-size: 0.85em;
+      margin-top: 3px;
+    }
+    
     .controls {
-      margin-top: 20px;
+      margin-top: 12px;
       display: flex;
-      gap: 10px;
+      gap: 8px;
       justify-content: center;
       flex-wrap: wrap;
     }
     
     button {
-      padding: 12px 25px;
-      font-size: 1.1em;
+      padding: 10px 20px;
+      font-size: 1em;
       font-family: inherit;
       border: none;
-      border-radius: 25px;
+      border-radius: 20px;
       cursor: pointer;
       transition: all 0.3s;
-      background: #667eea;
+      background: #ec4899;
       color: white;
     }
     
     button:hover {
       transform: translateY(-2px);
-      box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+      box-shadow: 0 5px 15px rgba(236, 72, 153, 0.4);
     }
     
     button.reset {
-      background: #f44336;
+      background: #8b5cf6;
     }
     
     button.hint {
-      background: #ff9800;
+      background: #f59e0b;
     }
     
     .message {
-      margin-top: 15px;
-      padding: 10px 20px;
+      margin-top: 12px;
+      padding: 8px 15px;
       border-radius: 10px;
-      font-size: 1.2em;
+      font-size: 1em;
       text-align: center;
-      background: #e8f5e9;
-      color: #2e7d32;
-      min-height: 50px;
-    }
-    
-    .message.player1-turn {
-      background: #e3f2fd;
-      color: #1565c0;
-    }
-    
-    .message.player2-turn {
-      background: #ffebee;
-      color: #c62828;
+      background: #fce4ec;
+      color: #c2185b;
+      min-height: 40px;
     }
     
     .message.winner {
       background: #fff3e0;
       color: #e65100;
-      font-size: 1.5em;
-      animation: pulse 1s infinite;
+      font-size: 1.3em;
+      animation: bounce 0.5s infinite;
     }
     
-    @keyframes pulse {
-      0%, 100% { transform: scale(1); }
-      50% { transform: scale(1.05); }
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-5px); }
     }
     
     .how-to {
-      margin-top: 20px;
-      padding: 15px;
-      background: #fff3e0;
+      margin-top: 15px;
+      padding: 12px;
+      background: #f3e5f5;
       border-radius: 10px;
-      max-width: 380px;
-      font-size: 0.95em;
-      line-height: 1.6;
+      max-width: 320px;
+      font-size: 0.85em;
+      line-height: 1.5;
     }
     
     .how-to h3 {
-      color: #e65100;
-      margin-bottom: 10px;
+      color: #7c3aed;
+      margin-bottom: 8px;
+      font-size: 1em;
     }
     
     .rules {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 10px;
-      margin-top: 10px;
+      gap: 5px;
     }
     
     .rule-item {
       display: flex;
       align-items: center;
-      gap: 8px;
-      font-size: 0.9em;
+      gap: 5px;
     }
   </style>
 </head>
 <body>
-  <h1>🐧 企鹅跳跳棋 🐧</h1>
-  <p class="subtitle">适合4-99岁的小朋友！</p>
+  <h1>🐱🐶 猫狗跳棋 🐶🐱</h1>
+  <p class="subtitle">适合4-99岁！</p>
   
   <div class="game-container">
     <div class="board" id="board"></div>
     
     <div class="info">
-      <div class="player-info active" id="player1-info">
-        <h3>🐧 蓝企鹅</h3>
+      <div class="player-info cat-turn active" id="player1-info">
+        <h3>🐱 小猫咪</h3>
         <div class="score" id="player1-score">0</div>
+        <div class="captures" id="player1-captures">吃掉: 0</div>
       </div>
-      <div class="player-info" id="player2-info">
-        <h3>🐧 红企鹅</h3>
+      <div class="player-info dog-turn" id="player2-info">
+        <h3>🐶 小狗狗</h3>
         <div class="score" id="player2-score">0</div>
+        <div class="captures" id="player2-captures">吃掉: 0</div>
       </div>
     </div>
     
@@ -266,30 +275,30 @@
       <button class="hint" onclick="showHint()">💡 提示</button>
     </div>
     
-    <div class="message" id="message">蓝企鹅先走！点击企鹅开始~</div>
+    <div class="message" id="message">🐱 小猫咪先走！点击猫咪开始~</div>
   </div>
   
   <div class="how-to">
-    <h3>📖 玩 法 介 绍</h3>
+    <h3>📖 玩 法 规 则</h3>
     <div class="rules">
-      <div class="rule-item">👆 点击自己的企鹅</div>
-      <div class="rule-item">👆 再点击可移动的位置</div>
-      <div class="rule-item">➡️ 只能走一步</div>
-      <div class="rule-item">⬆️ 只能向上走</div>
-      <div class="rule-item">🐧 吃掉对方的企鹅</div>
-      <div class="rule-item">🏆 把企鹅送到对面赢</div>
+      <div class="rule-item">👆 点自己动物</div>
+      <div class="rule-item">👆 点目标位置</div>
+      <div class="rule-item">⬆️ 猫往上走</div>
+      <div class="rule-item">⬇️ 狗往下走</div>
+      <div class="rule-item">⬆️⬇️ 可跳过吃子</div>
+      <div class="rule-item">🏆 到对岸赢</div>
     </div>
   </div>
 
   <script>
-    // 棋盘：0=空，1=玩家1(蓝)，2=玩家2(红)
+    // 棋盘：0=空，1=猫，2=狗
     let board = [];
-    let currentPlayer = 1;
+    let currentPlayer = 1; // 1=猫, 2=狗
     let selectedCell = null;
     let scores = { 1: 0, 2: 0 };
+    let captures = { 1: 0, 2: 0 };
     let gameOver = false;
     
-    // 初始化棋盘 - 5x5 跳棋风格
     function initBoard() {
       board = [
         [2, 2, 2, 2, 2],
@@ -313,9 +322,9 @@
           cell.dataset.col = col;
           
           if (board[row][col] === 1) {
-            cell.innerHTML = '<span class="piece player1">🐧</span>';
+            cell.innerHTML = '<span class="animal cat">🐱</span>';
           } else if (board[row][col] === 2) {
-            cell.innerHTML = '<span class="piece player2">🐧</span>';
+            cell.innerHTML = '<span class="animal dog">🐶</span>';
           }
           
           cell.addEventListener('click', () => handleClick(row, col));
@@ -331,43 +340,59 @@
       
       const piece = board[row][col];
       
-      // 选择自己的企鹅
+      // 选择自己的动物
       if (piece === currentPlayer) {
-        clearSelection();
+        clearHighlights();
         selectedCell = { row, col };
         document.querySelector(`[data-row="${row}"][data-col="${col}"]`).classList.add('selected');
+        document.querySelector(`[data-row="${row}"][data-col="${col}"] .animal`).classList.add('selected');
         showValidMoves(row, col);
         return;
       }
       
-      // 移动到空位
-      if (selectedCell && piece === 0) {
-        if (isValidMove(selectedCell.row, selectedCell.col, row, col)) {
-          movePiece(selectedCell.row, selectedCell.col, row, col);
+      // 移动到空位或吃子
+      if (selectedCell && (piece === 0 || piece !== currentPlayer)) {
+        const moveResult = getMoveInfo(selectedCell.row, selectedCell.col, row, col);
+        if (moveResult.valid) {
+          executeMove(selectedCell.row, selectedCell.col, row, col, moveResult);
         }
       }
     }
     
     function showValidMoves(row, col) {
       const moves = getValidMoves(row, col);
-      moves.forEach(({ row: r, col: c }) => {
-        document.querySelector(`[data-row="${r}"][data-col="${c}"]`).classList.add('valid');
+      moves.forEach(m => {
+        const cellEl = document.querySelector(`[data-row="${m.row}"][data-col="${m.col}"]`);
+        if (m.captures) {
+          cellEl.classList.add('can-capture');
+        } else {
+          cellEl.classList.add('valid-move');
+        }
       });
     }
     
     function getValidMoves(row, col) {
       const moves = [];
-      const directions = currentPlayer === 1 
-        ? [{ dr: -1, dc: 0 }, { dr: -1, dc: -1 }, { dr: -1, dc: 1 }]  // 玩家1向上
-        : [{ dr: 1, dc: 0 }, { dr: 1, dc: -1 }, { dr: 1, dc: 1 }];  // 玩家2向下
+      const piece = board[row][col];
+      if (!piece) return moves;
       
-      // 只能走一步
-      directions.forEach(({ dr, dc }) => {
+      // 猫往上(-1)，狗往下(+1)
+      const forward = piece === 1 ? -1 : 1;
+      
+      // 直线移动（一步）
+      [{ dr: forward, dc: 0 }, { dr: forward, dc: -1 }, { dr: forward, dc: 1 }].forEach(({ dr, dc }) => {
         const nr = row + dr;
         const nc = col + dc;
         if (nr >= 0 && nr < 5 && nc >= 0 && nc < 5) {
           if (board[nr][nc] === 0) {
-            moves.push({ row: nr, col: nc });
+            moves.push({ row: nr, col: nc, captures: null });
+          } else if (board[nr][nc] !== piece) {
+            // 检查能否跳吃
+            const jr = nr + dr;
+            const jc = nc + dc;
+            if (jr >= 0 && jr < 5 && jc >= 0 && jc < 5 && board[jr][jc] === 0) {
+              moves.push({ row: jr, col: jc, captures: { row: nr, col: nc } });
+            }
           }
         }
       });
@@ -375,53 +400,90 @@
       return moves;
     }
     
-    function isValidMove(fromRow, fromCol, toRow, toCol) {
+    function getMoveInfo(fromRow, fromCol, toRow, toCol) {
       const moves = getValidMoves(fromRow, fromCol);
-      return moves.some(m => m.row === toRow && m.col === toCol);
+      const move = moves.find(m => m.row === toRow && m.col === toCol);
+      if (move) {
+        return { valid: true, captures: move.captures };
+      }
+      return { valid: false, captures: null };
     }
     
-    function movePiece(fromRow, fromCol, toRow, toCol) {
+    function executeMove(fromRow, fromCol, toRow, toCol, moveResult) {
       const piece = board[fromRow][fromCol];
       board[fromRow][fromCol] = 0;
       board[toRow][toCol] = piece;
       
-      // 检查是否到达对面
+      let captured = false;
+      // 吃子
+      if (moveResult.captures) {
+        const { row: capRow, col: capCol } = moveResult.captures;
+        board[capRow][capCol] = 0;
+        captures[piece]++;
+        captured = true;
+      }
+      
+      // 检查是否到达对岸（猫到顶，狗到底）
+      let scored = false;
       if ((piece === 1 && toRow === 0) || (piece === 2 && toRow === 4)) {
         scores[piece]++;
-        // 重新放置到起点区域
+        scored = true;
+        // 重置到起点
         const startRow = piece === 1 ? 4 : 0;
         const emptySpots = [];
         for (let c = 0; c < 5; c++) {
-          if (board[startRow][c] === 0) {
-            emptySpots.push(c);
-          }
+          if (board[startRow][c] === 0) emptySpots.push(c);
         }
         if (emptySpots.length > 0) {
-          const randomCol = emptySpots[Math.floor(Math.random() * emptySpots.length)];
           board[toRow][toCol] = 0;
-          board[startRow][randomCol] = piece;
-        }
-        
-        if (scores[piece] >= 3) {
-          gameOver = true;
-          showMessage(`🏆 ${piece === 1 ? '蓝企鹅' : '红企鹅'}获胜！得分 ${scores[piece]}`, 'winner');
-          return;
+          board[startRow][emptySpots[Math.floor(Math.random() * emptySpots.length)]] = piece;
         }
       }
       
-      clearSelection();
+      // 检查胜利
+      if (scores[piece] >= 3) {
+        gameOver = true;
+        clearHighlights();
+        renderBoard();
+        const winner = piece === 1 ? '🐱 小猫咪' : '🐶 小狗狗';
+        showMessage(`🏆 ${winner}获胜！太厉害了！`, 'winner');
+        return;
+      }
+      
+      // 吃子后可以继续走
+      if (captured && !scored) {
+        currentPlayer = piece; // 继续当前玩家
+        selectedCell = { row: toRow, col: toCol };
+        clearHighlights();
+        renderBoard();
+        const hasMoreCaptures = getValidMoves(toRow, toCol).some(m => m.captures);
+        if (hasMoreCaptures) {
+          showMessage(`${piece === 1 ? '🐱' : '🐶'}可以继续吃！再走一步~`);
+          document.querySelector(`[data-row="${toRow}"][data-col="${toCol}"]`).classList.add('selected');
+          showValidMoves(toRow, toCol);
+        } else {
+          currentPlayer = currentPlayer === 1 ? 2 : 1;
+          updateInfo();
+          showMessage(`${currentPlayer === 1 ? '🐱' : '🐶'}的回合~`);
+        }
+        return;
+      }
+      
+      clearHighlights();
       currentPlayer = currentPlayer === 1 ? 2 : 1;
       updateInfo();
-      
-      const playerName = currentPlayer === 1 ? '蓝企鹅' : '红企鹅';
-      showMessage(`${playerName}的回合~`, currentPlayer === 1 ? 'player1-turn' : 'player2-turn');
-      
       renderBoard();
+      
+      const playerName = currentPlayer === 1 ? '🐱 小猫咪' : '🐶 小狗狗';
+      showMessage(`${playerName}的回合~`);
     }
     
-    function clearSelection() {
-      document.querySelectorAll('.selected, .valid').forEach(el => {
-        el.classList.remove('selected', 'valid');
+    function clearHighlights() {
+      document.querySelectorAll('.selected, .valid-move, .can-capture').forEach(el => {
+        el.classList.remove('selected', 'valid-move', 'can-capture');
+      });
+      document.querySelectorAll('.animal.selected').forEach(el => {
+        el.classList.remove('selected');
       });
       selectedCell = null;
     }
@@ -429,9 +491,14 @@
     function updateInfo() {
       document.getElementById('player1-score').textContent = scores[1];
       document.getElementById('player2-score').textContent = scores[2];
+      document.getElementById('player1-captures').textContent = `吃掉: ${captures[1]}`;
+      document.getElementById('player2-captures').textContent = `吃掉: ${captures[2]}`;
       
-      document.getElementById('player1-info').classList.toggle('active', currentPlayer === 1);
-      document.getElementById('player2-info').classList.toggle('active', currentPlayer === 2);
+      const p1 = document.getElementById('player1-info');
+      const p2 = document.getElementById('player2-info');
+      
+      p1.classList.toggle('active', currentPlayer === 1);
+      p2.classList.toggle('active', currentPlayer === 2);
     }
     
     function showMessage(text, className = '') {
@@ -443,17 +510,17 @@
     function showHint() {
       if (gameOver) return;
       
-      // 找当前玩家的任意一个棋子
       for (let row = 0; row < 5; row++) {
         for (let col = 0; col < 5; col++) {
           if (board[row][col] === currentPlayer) {
             const moves = getValidMoves(row, col);
             if (moves.length > 0) {
-              clearSelection();
+              clearHighlights();
               selectedCell = { row, col };
               document.querySelector(`[data-row="${row}"][data-col="${col}"]`).classList.add('selected');
               showValidMoves(row, col);
-              showMessage('💡 看这里！绿色的地方可以走~');
+              const moveType = moves.some(m => m.captures) ? '可以吃子！' : '可以移动~';
+              showMessage(`💡 ${moveType}`);
               return;
             }
           }
@@ -464,11 +531,12 @@
     function newGame() {
       gameOver = false;
       scores = { 1: 0, 2: 0 };
+      captures = { 1: 0, 2: 0 };
       currentPlayer = 1;
       selectedCell = null;
       initBoard();
       renderBoard();
-      showMessage('蓝企鹅先走！点击企鹅开始~');
+      showMessage('🐱 小猫咪先走！点击猫咪开始~');
     }
     
     // 启动游戏
